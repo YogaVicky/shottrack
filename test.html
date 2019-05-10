@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="./initial.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/all.min.css">
+    <link rel="stylesheet" href="./css/brands.min.css">
+    <link rel="stylesheet" href="./css/fontawesome.min.css">
+    <link rel="stylesheet" href="./css/regular.min.css">
+    <link rel="stylesheet" href="./css/solid.min.css">
+    <link rel="stylesheet" href="./css/svg-with-js.min.css">
+    <link rel="stylesheet" href="./css/v4-shims.min.css">
+      <link rel="stylesheet" href="./css/v4-shims.min.css">
+      <link rel="stylesheet" href="./css/font-awesome.min.css">
+      <link rel="stylesheet" href="./css/font-awesome.css">
+  <script  src="./js/all.min.js"></script>
+  <script  src="./js/brands.min.js"></script>
+  <script  src="./js/fontawesome.min.js"></script>
+  <script  src="./js/solid.min.js"></script>
+  <script  src="./js/regular.min.js"></script>
+  <script  src="./js/v4-shims.min.js"></script>
+  <title>Shottrack</title>
+  </head>
+  <body>
+   <div class="header">
+   <h1><span  class="icon"><i id="button1" class="fa fa-bars" onclick="openNav()"></i></span><b>&nbsp;shot track</b><span><input id="search" type="text" placeholder="search">
+   </span></h1>
+   </div>
+  <div id="mySidebar" class="sidebar">
+  <button id="button2">add +</button>  
+  <p id="tree1"> <span class="drop"><i class="fas fa-chevron-circle-right"></i></span>&nbsp;&nbsp;Asset</p>
+  <p id="tree1"> <span class="drop"><i class="fas fa-chevron-circle-right"></i></span>&nbsp;&nbsp;Shot</p>
+</div>
+<div id="content">
+<div class ="table-responsive">                 
+  <table class="table ">
+    <col width="9%">
+    <col width="11%">
+    <col width="13%">
+    <col width="15%">
+    <col width="20%">
+    <col width="20%">
+    <col width="7%">
+    <col width="15%">
+    <thead>
+      <tr id="heading">
+        <th>project</th>
+        <th>thumbnail</th>
+        <th>scope category</th>
+        <th>scope name</th>
+        <th>description</th>
+        <th>SAP</th>
+        <th>status</th>
+        <th onclick="openModel()">tasks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+  <script>
+
+    
+function openNav() {
+  document.getElementById("mySidebar").style.width = "300px";
+  document.getElementById("content").style.marginLeft = "300px";
+  document.getElementById("button1").className="fa fa-bell";
+  document.getElementById("button1").onclick=closeNav;
+}
+function closeNav() {
+  document.getElementById("mySidebar").style.width = 0;
+  document.getElementById("button1").className="fa fa-close";
+  document.getElementById("content").style.marginLeft = 0;
+  document.getElementById("button1").onclick=openNav;
+}
+</script>
+  <script type="text/javascript" src="../js/new1.js"></script>
+  <script type="text/javascript" src="../js/new2.js"></script>
+  <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../js/select.js"></script>
+  <script type="text/javascript" src="../js/auto.js"></script>
+   <script>
+       $(document).ready(function() {
+    $("#p").multiselect({
+        nonSelectedText:'project'
+    });
+    $("#t").multiselect({
+        nonSelectedText:'type'
+    });
+});
+   </script>
+  <script>
+      var scopes=[];
+      var i=0;
+      {%for b in user[0]%}
+      scopes[i] = {{b['scope']|tojson}}
+      i++;
+      {%endfor%}
+      autocomplete(document.getElementById("s"), scopes);
+  </script>
+  <script>
+      function filter(){
+      var scope=document.getElementById("s").value;
+      console.log(scope);
+      var x=document.getElementById("p");
+      var project=[];
+      var j=0;
+      for (var i = 0; i < x.options.length; i++) {
+         if(x.options[i].selected == true){
+              project[j]=x.options[i].value;
+              console.log(project[j]);
+              j++;
+          }
+      }
+      if(project[0]=="multiselect-all")
+      project.shift();
+      j=0;
+      var y=document.getElementById("t");
+      var type=[];
+      for (var i = 0; i < y.options.length; i++) {
+         if(y.options[i].selected == true){
+              type[j]=y.options[i].value;
+              console.log(type[j]);
+              j++;
+          }
+      }
+      if(type[0]=="multiselect-all")
+      type.shift();
+        var params={pNames : project,
+        sNames : scope,
+        tNames : type};
+        console.log(params);
+        console.log(JSON.stringify(params));
+        var xhr=new XMLHttpRequest();
+        xhr.open('POST','/note','true');
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var data = JSON.stringify(params)
+        console.log(data);
+        xhr.send(data);
+          }
+  </script>
+  </body>
